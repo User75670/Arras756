@@ -35,20 +35,20 @@ var roomSpeed = c.gameSpeed;
 const room = {
     lastCycle: undefined,
     cycleSpeed: 1000 / roomSpeed / 30,
-    width: c.WIDTH,
-    height: c.HEIGHT,
-    setup: c.ROOM_SETUP[c.MAP],
-    xgrid: c.ROOM_SETUP[c.MAP][0].length, 
-    ygrid: c.ROOM_SETUP[c.MAP].length,
+    width: c.ROOM_SETUP[c.MAP]["width"],
+    height: c.ROOM_SETUP[c.MAP]["height"],
+    setup: c.ROOM_SETUP[c.MAP]["map"],
+    xgrid: c.ROOM_SETUP[c.MAP]["map"][0].length, 
+    ygrid: c.ROOM_SETUP[c.MAP]["map"].length,
     gameMode: c.MODE,   
     skillBoost: c.SKILL_BOOST,
     scale: {
-        square: c.WIDTH * c.HEIGHT / 100000000,
-        linear: Math.sqrt(c.WIDTH * c.HEIGHT / 100000000),
+        square: c.ROOM_SETUP[c.MAP]["width"] * c.ROOM_SETUP[c.MAP]["height"] / 100000000,
+        linear: Math.sqrt(c.ROOM_SETUP[c.MAP]["width"] * c.ROOM_SETUP[c.MAP]["height"] / 100000000),
     },
-    maxFood: c.WIDTH * c.HEIGHT / 20000 * c.FOOD_AMOUNT,
+    maxFood: c.ROOM_SETUP[c.MAP]["width"] * c.ROOM_SETUP[c.MAP]["height"] / 20000 * c.FOOD_AMOUNT,
     isInRoom: location => {
-        return location.x >= 0 && location.x <= c.WIDTH && location.y >= 0 && location.y <= c.HEIGHT
+        return location.x >= 0 && location.x <= c.ROOM_SETUP[c.MAP]["width"] && location.y >= 0 && location.y <= c.ROOM_SETUP[c.MAP]["height"]
     },    
     topPlayerID: -1,
 };
@@ -2914,7 +2914,7 @@ const sockets = (() => {
                             'R',
                             room.width,
                             room.height,
-                            JSON.stringify(c.ROOM_SETUP[c.MAP]), 
+                            JSON.stringify(c.ROOM_SETUP[c.MAP]["map"]), 
                             JSON.stringify(util.serverStartTime),
                             roomSpeed
                         );
