@@ -11,13 +11,11 @@
   "runSpeed": 1.5,
   "maxHeartbeatInterval": 300000,
   "verbose": true,
-  "WIDTH": 1500,
-  "HEIGHT": 1500,
   "MODE": "tdm",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
   "MAP": "custom",
-  "ROOM_SETUP": {
+  "MAPS": {
     "custom": {
       "height": 3000,
       "width": 3000,
