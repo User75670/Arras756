@@ -1786,7 +1786,7 @@ class Entity {
             this.settings.hasNoRecoil = set.HAS_NO_RECOIL; 
         }
         if (set.INVINCIBLE != null) { 
-            this.settings.godmode = set.godmode; 
+            this.settings.godmode = set.INVINCIBLE; 
         }
         if (set.CRAVES_ATTENTION != null) { 
             this.settings.attentionCraver = set.CRAVES_ATTENTION; 
@@ -2310,7 +2310,7 @@ class Entity {
     }
 
     contemplationOfMortality() {
-        if (this.invuln || this.settings.godmode) {
+        if (this.invuln || (this.settings.godmode && typeof this.settings.godmode === 'boolean')) {
             this.damageRecieved = 0;
             return 0;
         }
@@ -4614,7 +4614,7 @@ var maintainloop = (() => {
     // The NPC function
     let makenpcs = (() => {
         // Make base protectors if needed.
-            /*let f = (loc, team) => { 
+            let f = (loc, team) => { 
                 let o = new Entity(loc);
                     o.define(Class.baseProtector);
                     o.team = -team;
@@ -4622,7 +4622,7 @@ var maintainloop = (() => {
             };
             for (let i=1; i<5; i++) {
                 room['bas' + i].forEach((loc) => { f(loc, i); }); 
-            }*/
+            }
         // Return the spawning function
         let bots = [];
         return () => {
@@ -4659,6 +4659,7 @@ var maintainloop = (() => {
                         o.skill.score += 35;
                         o.skill.maintain();
                     }
+                    // Give just enough room for the bot to upgrade
                     if (o.skill.score >= 1400 && o.skill.score <= 1450) {
                         o.define(Class.basic.UPGRADES_TIER_1[Math.floor(Math.random() * Class.basic.UPGRADES_TIER_1.length)]);
                     }
