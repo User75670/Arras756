@@ -16,7 +16,8 @@
   "MODE": "tdm",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
-  "ROOM_SETUP": [
+  "GAMEMODE": "custom",
+  "ROOM_SETUP":[
     [ "bas1", "roid", "roid", "norm", "norm"],
     [ "roid", "roid", "roid", "norm", "norm"],
     [ "roid", "roid", "roid", "norm", "norm"],
