@@ -20,9 +20,9 @@
       "height": 3000,
       "width": 3000,
       "map": [
-        [ "bas1", "roid", "roid", "norm", "norm" ],
-        [ "roid", "roid", "roid", "norm", "norm" ],
-        [ "roid", "roid", "roid", "norm", "norm" ],
+        [ "bas1", "roid", "rock", "norm", "norm" ],
+        [ "roid", "roid", "rock", "norm", "norm" ],
+        [ "rock", "rock", "rock", "norm", "norm" ],
         [ "norm", "norm", "norm", "nest", "nest" ],
         [ "norm", "norm", "norm", "nest", "nest" ]
       ]

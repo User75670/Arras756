@@ -1634,6 +1634,7 @@ class Entity {
         this.damp = 0.05;
         this.collisionArray = [];
         this.invuln = false;
+        this.phase = false;
         this.alpha = 1;
         this.invisible = [0, 0];
         // Get a new unique id
@@ -1824,6 +1825,9 @@ class Entity {
         }
         if (set.INVISIBLE != null) { 
             this.invisible = set.INVISIBLE;
+        }
+        if (set.PHASE != null) { 
+            this.settings.phase = set.PHASE; 
         }
         if (set.DANGER != null) { 
             this.dangerValue = set.DANGER; 
@@ -2723,7 +2727,7 @@ var http = require('http'),
                 let r2 = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
                 let r3 = Math.sqrt(Math.pow(x - x3, 2) + Math.pow(y - y3, 2));
                 if (r != r2 || r != r3) {
-                    //util.log('somethings fucky');
+                    //util.log('something');
                 }
                 return { x: x, y: y, radius: r };            
             }
@@ -4620,7 +4624,7 @@ var maintainloop = (() => {
         // Make base protectors if needed.
             let f = (loc, team) => { 
                 let o = new Entity(loc);
-                    o.define(Class.baseProtector);
+                    o.define(Class.baseProtector2);
                     o.team = -team;
                     o.color = [10, 11, 12, 15][team-1];
             };
@@ -4650,6 +4654,19 @@ var maintainloop = (() => {
                     o.color = 17;
                     o.define(Class.bot);
                     o.define(Class.basic);
+                    o.define({    
+                        SKILL: [
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+        Math.round(Math.random() * 9),
+    ],})
                     o.name += ran.chooseBotName();
                     o.refreshBodyAttributes();
                     o.color = 17;
