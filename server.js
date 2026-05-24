@@ -68,7 +68,7 @@ const room = {
     },
     maxFood: mapWidth * mapHeight / 20000 * c.FOOD_AMOUNT,
     isInRoom: location => {
-        return location.x >= 0 && location.x <= mapWidth && location.y >= 0 && location.y <= mapHeight
+        return location.x >= 0 && location.x < mapWidth && location.y >= 0 && location.y < mapHeight
     },    
     topPlayerID: -1,
 };
@@ -143,7 +143,6 @@ const room = {
         if (room.isInRoom(location)) {
             let a = Math.floor(location.y * room.ygrid / room.height);
             let b = Math.floor(location.x * room.xgrid / room.width);
-            if (a === room.ygrid || b === room.xgrid || a < 0 || b < 0) return false;
             return type === room.setup[a][b];
         } else {
             return false;
@@ -153,7 +152,6 @@ const room = {
         if (room.isInRoom(location)) {
             let a = Math.floor(location.y * room.ygrid / room.height);
             let b = Math.floor(location.x * room.xgrid / room.width);
-            if (a === room.ygrid || b === room.xgrid || a < 0 || b < 0) return false;
             let v = room.setup[a][b];
             return v !== 'nest';
         } else {
