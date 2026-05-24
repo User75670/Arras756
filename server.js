@@ -34,16 +34,26 @@ global.fps = "Unknown";
 var roomSpeed = c.gameSpeed;
 
 const map = c.MAPS[c.MAP]["map"];
+if (map.length < 1) {
+    throw new Error('invalid map length');
+}
 const mapHeight = c.MAPS[c.MAP]["height"];
 const mapWidth = c.MAPS[c.MAP]["width"];
+const ygrid = map.length;
+const xgrid = map[0].length;
+for (let i = 1; i < map.length; i++) {
+    if (map[i].length !== xgrid) {
+        throw new Error('xgrid length mismatch');
+    }
+}
 const room = {
     lastCycle: undefined,
     cycleSpeed: 1000 / roomSpeed / 30,
     width: mapWidth,
     height: mapHeight,
     setup: map,
-    xgrid: map[0].length, 
-    ygrid: map.length,
+    xgrid: xgrid, 
+    ygrid: ygrid,
     gameMode: c.MODE,   
     skillBoost: c.SKILL_BOOST,
     scale: {
