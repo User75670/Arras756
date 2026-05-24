@@ -2727,7 +2727,6 @@ var http = require('http'),
                 let r2 = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
                 let r3 = Math.sqrt(Math.pow(x - x3, 2) + Math.pow(y - y3, 2));
                 if (r != r2 || r != r3) {
-                    //util.log('something');
                 }
                 return { x: x, y: y, radius: r };            
             }
