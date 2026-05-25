@@ -4621,7 +4621,7 @@ var maintainloop = (() => {
                 let choice = [];
                 switch (ran.chooseChance(40, 1)) {
                     case 0: 
-                        choice = [[Class.elite_destroyer], 2, 'a', 'nest'];
+                        choice = [[Class.elite_destroyer, Class.elite_sprayer, Class.elite_gunner], 2, 'a', 'nest'];
                         break;
                     case 1: 
                         choice = [[Class.palisade], 1, 'castle', 'norm']; 
@@ -4650,7 +4650,7 @@ var maintainloop = (() => {
         if (c.BASE_PROTECTORS) {
             let f = (loc, team) => { 
                 let o = new Entity(loc);
-                if (typeof c.BASE_PROTECTOR !== 'string' || !Class[c.BASE_PROTECTOR]) throw new Error('invalid base protector')
+                if (typeof c.BASE_PROTECTOR !== 'string' || !Class[c.BASE_PROTECTOR]) throw new Error('invalid base protector');
                     o.define(Class[c.BASE_PROTECTOR]);
                     o.team = -team;
                     o.color = [10, 11, 12, 15][team-1];
@@ -4678,22 +4678,53 @@ var maintainloop = (() => {
             // Bots
                 if (bots.length < c.BOTS) {
                     let o = new Entity(room.random());
+                    let seed = Math.random();
+                    let skillpoints = 40;
+                    let chance = 0.1;
+                    let skills = {
+                        dmg: 0,
+                        hlth: 0,
+                        bspd: 0,
+                        blh: 0,
+                        bpn: 0,
+                        rld: 0,
+                        spd: 0,
+                        rgn: 0,
+                        shd: 0
+                    }
+                    for (let s in skillpoints) {
+                        if (seed < chance) {
+                            let points = Math.round(Math.random() * 9);
+                            skills[s] = points;
+                            skillpoints -= points;
+                            chance += 0.1;
+                        }
+                    }
+                    while (skillpoints > 0) {
+                        let s = Object.keys(skills)[Math.round(Math.random() * Object.keys(skills).length)];
+                        let sval = skills[s];
+                        if (sval + skillpoints <= 9) {
+                            skills[s] += sval;
+                        }
+                    }
                     o.color = 17;
                     o.define(Class.bot);
                     o.define(Class.basic);
-                    o.define({    
+                    o.define(Class.basic.UPGRADES_TIER_1[Math.floor(Math.random() * Class.basic.UPGRADES_TIER_1.length)]);
+                    o.define({ 
                         SKILL: [
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-        Math.round(Math.random() * 9),
-    ],})
+                            skills.dmg,
+                            skills.hlth,
+                            skills.bspd,
+                            skills.blh,
+                            skills.bpn,
+                            skills.rld,
+                            skills.spd,
+                            skills.rgn,
+                            skills.shd
+                        ], 
+                        LEVEL: 45
+                    })
                     o.name += ran.chooseBotName();
                     o.refreshBodyAttributes();
                     o.color = 17;
@@ -4702,16 +4733,17 @@ var maintainloop = (() => {
                 // Remove dead ones
                 bots = bots.filter(e => { return !e.isDead(); });
                 // Slowly upgrade them
-                bots.forEach(o => {
-                    if (o.skill.level < 45) {
-                        o.skill.score += 35;
-                        o.skill.maintain();
-                    }
-                    // Give just enough room for the bot to upgrade
-                    if (o.skill.score >= 1400 && o.skill.score <= 1450) {
-                        o.define(Class.basic.UPGRADES_TIER_1[Math.floor(Math.random() * Class.basic.UPGRADES_TIER_1.length)]);
-                    }
-                });
+                // give them insta lvl 45 up there
+                // bots.forEach(o => {
+                //     if (o.skill.level < 45) {
+                //         o.skill.score += 35;
+                //         o.skill.maintain();
+                //     }
+                //     // Give just enough room for the bot to upgrade
+                //     if (o.skill.score >= 1400 && o.skill.score <= 1450) {
+                //         o.define(Class.basic.UPGRADES_TIER_1[Math.floor(Math.random() * Class.basic.UPGRADES_TIER_1.length)]);
+                //     }
+                // });
             
         };
     })();
