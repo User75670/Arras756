@@ -45,9 +45,10 @@ const mapHeight = map.height;
 const mapWidth = map.width;
 const ygrid = setup.length;
 const xgrid = setup[0].length;
-
+const teams = map.teams;
 if (typeof mapHeight !== 'number' || typeof mapWidth !== 'number') throw new Error('NaN dimensions');
 if (mapHeight <= 0 || mapWidth <= 0 || !Number.isFinite(mapWidth) || !Number.isFinite(mapHeight)) throw new Error('invalid dimension lengths');
+if (typeof teams !== 'number' || teams <= 0) throw new Error('invalid teams');
 for (let i = 1; i < setup.length; i++) {
     if (!Array.isArray(setup[i])) throw new Error('invalid setup row');
     if (setup[i].length !== xgrid) throw new Error('xgrid length mismatch');
@@ -3333,7 +3334,7 @@ const sockets = (() => {
                                 if (p.body != null) { scoreCensus[p.team - 1] += p.body.skill.score; }
                             });
                             let possiblities = [];
-                            for (let i=0, m=0; i<c.TEAMS; i++) {
+                            for (let i=0, m=0; i<teams; i++) {
                                 let v = Math.round(1000000 * (room['bas'+(i+1)].length + 1) / (census[i] + 1) / scoreCensus[i]);
                                 if (v > m) {
                                     m = v; possiblities = [i];
@@ -4655,7 +4656,7 @@ var maintainloop = (() => {
                     o.team = -team;
                     o.color = [10, 11, 12, 15][team-1];
             };
-            for (let i=1; i<=4; i++) {
+            for (let i=1; i<=teams; i++) {
                 room['bas' + i].forEach((loc) => { f(loc, i); }); 
             }}
         // Return the spawning function

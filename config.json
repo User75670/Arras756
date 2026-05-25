@@ -14,12 +14,12 @@
   "MODE": "tdm",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
-  "TEAMS": 1,
-  "MAP": "custom",
+  "MAP": "2tdm",
   "MAPS": {
     "custom": {
       "height": 3000,
       "width": 3000,
+      "teams": 1,
       "setup": [
         [ "bas1", "roid", "rock", "norm", "norm" ],
         [ "roid", "roid", "rock", "norm", "norm" ],
@@ -31,11 +31,32 @@
     "default": {
       "height": 1500,
       "width": 1500,
+      "teams": 4,
       "setup": [
         [ "roid", "norm", "norm", "roid" ],
         [ "norm", "nest", "roid", "norm" ],
         [ "norm", "roid", "nest", "norm" ],
         [ "roid", "norm", "norm", "roid" ]
+      ]
+    },
+    "2tdm": {
+      "height": 8000,
+      "width": 8000,
+      "teams": 2,
+      "setup": [
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "nest", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "nest", "nest", "nest", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "nest", "nest", "nest", "nest", "nest", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "nest", "nest", "nest", "nest", "nest", "nest", "nest", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "nest", "nest", "nest", "nest", "nest", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "nest", "nest", "nest", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "nest", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
+        ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"]
       ]
     }
   },
@@ -77,5 +98,5 @@
   "GLASS_HEALTH_FACTOR": 2,
   "ZOMBIE": false,
   "BASE_PROTECTORS": true,
-  "BASE_PROTECTOR": "baseProtector2"
+  "BASE_PROTECTOR": "baseProtector"
 }
