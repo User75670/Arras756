@@ -4844,21 +4844,14 @@ var maintainloop = (() => {
                 }
             }
             stop() {
-                util.debug('FoodSpawner stopped, removing.')
                 util.remove(foodSpawners, foodSpawners.indexOf(this))
             }
         }
         // Add them
-        if (food.length < 100) {
-            foodSpawners.push(new FoodSpawner());
-            foodSpawners.push(new FoodSpawner());
-            foodSpawners.push(new FoodSpawner());
-            foodSpawners.push(new FoodSpawner());
-        } else {
-            foodSpawners.forEach(f => 
-                f.stop()
-            );
-        }
+        foodSpawners.push(new FoodSpawner());
+        foodSpawners.push(new FoodSpawner());
+        foodSpawners.push(new FoodSpawner());
+        foodSpawners.push(new FoodSpawner());
         // Food making functions 
         let makeGroupedFood = () => { // Create grouped food
             // Choose a location around a spawner
@@ -4908,8 +4901,8 @@ var maintainloop = (() => {
             };
             // Do the censusNest
             food = entities.map(instance => {
-                try {
-                    if (instance.type === 'tank') {
+                try {                           // bots don't count
+                    if (instance.type === 'tank' && !instance.isBot) {
                         census.tank++;
                     } else if (instance.foodLevel > -1) { 
                         if (room.isIn('nest', { x: instance.x, y: instance.y, })) { censusNest.sum++; censusNest[instance.foodLevel]++; }
@@ -4919,6 +4912,7 @@ var maintainloop = (() => {
                 } catch (err) { util.error(instance.label); util.error(err); instance.kill(); }
             }).filter(e => { return e; });     
             // Sum it up   
+
             let maxFood = 1 + room.maxFood + 15 * census.tank;      
             let maxNestFood = 1 + room.maxFood * room.nestFoodAmount;
             let foodAmount = census.sum;
