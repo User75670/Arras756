@@ -4082,6 +4082,7 @@ const sockets = (() => {
                         },
                         terminate: () => {
                             clearTimeout(nextUpdateCall);
+                            clearTimeout(trafficMonitoring);
                             clearInterval(trafficMonitoring);
                             broadcast.unsubscribe(socket)
                         },
@@ -4509,12 +4510,32 @@ var gameloop = (() => {
     let time;
     // Return the loop function
     return () => {
+d        // Lightweight runtime profiling (prints every ~10s, only if server is lagging)
+        // This helps pinpoint whether the 30s lag is activation/collide/life/etc.
+        const __tickStart = Date.now();
+
         logs.loops.tally();
         logs.master.set();
         logs.activation.set();
             entities.forEach(e => entitiesactivationloop(e));
         logs.activation.mark();
+
+        // Track entity counts (useful to correlate with spikes)
+        let __nonGhost = 0;
+        let __activeSoon = 0;
+        for (let i = 0; i < entities.length; i++) {
+            if (!entities[i].isGhost) __nonGhost++;
+            // activation.check() is cheap; this is only an approximation of expensive work
+            if (entities[i].activation && entities[i].activation.check && entities[i].activation.check()) __activeSoon++;
+        }
+        // If tick took unusually long, print diagnostic once per cooldown
+        if (!gameloop.__diagLast || (Date.now() - gameloop.__diagLast) > 10000) {
+            // We'll decide later after collide+life, but store these for printing.
+            gameloop.__diagLast = Date.now();
+            gameloop.__diag = { tickStart: __tickStart, nonGhost: __nonGhost, activeSoon: __activeSoon };
+        }
         // Do collisions
+        let __collideStart = Date.now();
         logs.collide.set();
         if (entities.length > 1) {
             // Load the grid
@@ -4678,8 +4699,10 @@ var maintainloop = (() => {
             spawnBosses(census);
             // Bots
                 if (bots.length < c.BOTS) {
-                    let o = new Entity(room.random());
+
                     let skillpoints = 40;
+                    let botTeams = [0, 1, 2, 3, 4]
+                    let team = botTeams[Math.floor(Math.random() * (teams + 1))];
                     let upgrades = [...Class.basic.UPGRADES_TIER_1, ...Class.basic.UPGRADES_TIER_2, ...Class.basic.UPGRADES_TIER_3];
                     let upgrade = upgrades[Math.floor(Math.random() * upgrades.length)];
                     let skills = {
@@ -4694,6 +4717,7 @@ var maintainloop = (() => {
                         rgn: 0,
                         shd: 0
                     }
+                    let o = new Entity('bas' + team);
                     while (skillpoints > 0) {
                         let s = Object.keys(skills)[Math.floor(Math.random() * Object.keys(skills).length)];
                         if (skills[s] < c.MAX_SKILL) {
@@ -4721,9 +4745,10 @@ var maintainloop = (() => {
                         ], 
                         LEVEL: 45
                     })
+                    // o.team = -team;
                     o.name += ran.chooseBotName();
                     o.refreshBodyAttributes();
-                    o.color = 17;
+                    o.color = [17, 10, 11, 12, 15][team];
                     bots.push(o);
                 }
                 // Remove dead ones
