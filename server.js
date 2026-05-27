@@ -4,7 +4,6 @@
 "use strict";
 
 require('dotenv').config();
-
 // General requires
 require('google-closure-library');
 goog.require('goog.structs.PriorityQueue');
@@ -272,6 +271,7 @@ class io_doNothing extends IO {
         };
     }
 }
+// copy minion because too lazy to make myself
 class io_ram extends IO {
        constructor(body) {
         super(body);
@@ -4738,13 +4738,13 @@ var maintainloop = (() => {
                     let team = botTeams[Math.floor(Math.random() * (teams + 1))];
                     let o = new Entity(room.random());
                     let skillpoints = 40;
-                    let upgrades = [...Class.basic.UPGRADES_TIER_1, ...Class.basic.UPGRADES_TIER_2, ...Class.basic.UPGRADES_TIER_3];
+                    let upgrades = [Class.basic, ...Class.basic.UPGRADES_TIER_1, ...Class.basic.UPGRADES_TIER_2, ...Class.basic.UPGRADES_TIER_3];
                     let upgrade = upgrades[Math.floor(Math.random() * upgrades.length)];
                     let skills = {
                         dmg: 0,
                         hlth: 0,
                         bspd: 0,
-                        blh: 0,
+                        bhl: 0,
                         bpn: 0,
                         bdmg: 0,
                         rld: 0,
@@ -4769,7 +4769,7 @@ var maintainloop = (() => {
                             skills.dmg,
                             skills.hlth,
                             skills.bspd,
-                            skills.blh,
+                            skills.bhl,
                             skills.bpn,
                             skills.bdmg,
                             skills.rld,
