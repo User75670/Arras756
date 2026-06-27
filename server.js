@@ -33,6 +33,9 @@ Array.prototype.remove = index => {
 global.fps = "Unknown";
 var roomSpeed = c.gameSpeed;
 
+// save myself from future bugs
+
+// how do I make these shorter bruh
 const map = c.MAPS[c.MAP];
 if (!map) throw new Error('nonexistent map');
 if (!map.setup) throw new Error('nonexistent setup');
@@ -45,10 +48,11 @@ const mapHeight = map.height;
 const mapWidth = map.width;
 const ygrid = setup.length;
 const xgrid = setup[0].length;
-const teams = map.teams;
-if (typeof mapHeight !== 'number' || typeof mapWidth !== 'number') throw new Error('NaN dimensions');
-if (mapHeight <= 0 || mapWidth <= 0 || !Number.isFinite(mapWidth) || !Number.isFinite(mapHeight)) throw new Error('invalid dimension lengths');
-if (typeof teams !== 'number' || teams <= 0) throw new Error('invalid teams');
+const teams = map.teams; 
+if ((typeof mapHeight !== 'number' || typeof mapWidth !== 'number') && mapHeight <= 0 || mapWidth <= 0 || !Number.isFinite(mapWidth) || !Number.isFinite(mapHeight)) 
+    {mapHeight = 1500; mapWidth = 1500; util.warn('Invalid map width or height. Reverting to default')};
+
+if (typeof teams !== 'number' || teams <= 0) {teams = 4; util.warn('Invalid teams. Reverting to default.')}
 for (let i = 1; i < setup.length; i++) {
     if (!Array.isArray(setup[i])) throw new Error('invalid setup row');
     if (setup[i].length !== xgrid) throw new Error('xgrid length mismatch');
