@@ -4648,31 +4648,31 @@ var maintainloop = (() => {
         util.log('Placing ' + count + ' obstacles!');
     }
     function poisonTiles() {
-        if (room.poisonedTiles >= c.MAX_POISONED_TILES) return;
-        if (Math.random() >= (c.P_TILE_CHANCE_1HZ / 100 / (1000 / room.maintainloopSpeed))) return;
         let j = 0;
-        for (const row of room.setup) {
+        room.setup.forEach(row => { 
             let i = 0;
-
-
-            for (const cell of row) {
+            row.forEach(cell => {
                 if (
                     !room.tiles[j][i].poisoned &&
-                    cell !== 'bas1' &&
-                    cell !== 'bas2' &&
-                    cell !== 'bas3' &&
-                    cell !== 'bas4'
+                    (
+                        cell !== 'bas1' &&
+                        cell !== 'bas2' &&
+                        cell !== 'bas3' &&
+                        cell !== 'bas4'
+                    ) && 
+                        Math.random() >= (c.P_TILE_CHANCE_1HZ / 100 / (1000 / room.maintainloopSpeed)) &&
+                        room.poisonedTiles < c.MAX_POISONED_TILES
+
                 ) {
                     room.tiles[j][i].poisoned = true;
                     room.tiles[j][i].timePassed = 0;
                     room.poisonedTiles++;
                     sockets.broadcast('A tile has been poisoned!');
-                    return; // prevent excessive poisoning
                 }
                 i++;
-            } 
+            });
             j++;
-        }
+        });
     }
     function unpoisonTiles(delta) {
         let j = 0;

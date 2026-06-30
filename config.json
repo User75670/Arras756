@@ -15,7 +15,7 @@
   "MODE": "tdm",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
-  "MAP": "2tdm",
+  "MAP": "default",
   "MAPS": {
     "custom": {
       "height": 3000,
@@ -103,7 +103,7 @@
   "BASE_PROTECTOR": "baseProtector3",
   "BOT_PREFIX": "",
   "POISON_TILES": true,
-  "MAX_POISONED_TILES": 1,
-  "P_TILE_CHANCE_1HZ": 1,
+  "MAX_POISONED_TILES": 4,
+  "P_TILE_CHANCE_1HZ": 5,
   "MAX_POISONED_TILE_TIME": 20
 }
