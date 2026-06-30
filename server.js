@@ -44,15 +44,13 @@ if (map.setup.length <= 0) throw new Error('invalid setup length');
 if (!Array.isArray(map.setup[0])) throw new Error('invalid setup row (first row)');
 
 const setup = map.setup;
-let mapHeight = map.height;
-let mapWidth = map.width;
 const ygrid = setup.length;
 const xgrid = setup[0].length;
 let teams = map.teams; 
-if ((typeof mapHeight !== 'number' || typeof mapWidth !== 'number') && mapHeight <= 0 || mapWidth <= 0 || !Number.isFinite(mapWidth) || !Number.isFinite(mapHeight)) 
-    {mapHeight = 1500; mapWidth = 1500; util.warn('Invalid map width or height. Reverting to default')};
+if ((typeof map.height !== 'number' || typeof map.width !== 'number') && map.height <= 0 || map.width <= 0 || !Number.isFinite(map.width) || !Number.isFinite(map.height)) 
+    {map.height = 1500; map.width = 1500; util.warn('Invalid map width or height. Reverting to default')};
 
-if (typeof teams !== 'number' || teams <= 0) {teams = 4; util.warn('Invalid teams. Reverting to default.')}
+if ((typeof teams !== 'number' || teams <= 0) && map.mode === 'tdm') {teams = 4; util.warn('Invalid teams. Reverting to default.')}
 for (let i = 1; i < setup.length; i++) {
     if (!Array.isArray(setup[i])) throw new Error('invalid setup row');
     if (setup[i].length !== xgrid) throw new Error('xgrid length mismatch');
@@ -60,12 +58,13 @@ for (let i = 1; i < setup.length; i++) {
 const room = {
     lastCycle: undefined,
     cycleSpeed: 1000 / roomSpeed / 30,
-    width: mapWidth,
-    height: mapHeight,
+    maintainloopSpeed: 200,
+    width: map.width,
+    height: map.height,
     setup: setup,
     xgrid: xgrid, 
     ygrid: ygrid,
-    gameMode: c.MODE,   
+    gameMode: map.mode,   
     skillBoost: c.SKILL_BOOST,
     poisonedTiles: 0,
     p_tiles_before: p.now(),
@@ -74,12 +73,12 @@ const room = {
         timePassed: 0,
     }))),
     scale: {
-        square: mapWidth * mapHeight / 100000000,
-        linear: Math.sqrt(mapWidth * mapHeight / 100000000),
+        square: map.width * map.height / 100000000,
+        linear: Math.sqrt(map.width * map.height / 100000000),
     },
-    maxFood: mapWidth * mapHeight / 20000 * c.FOOD_AMOUNT,
+    maxFood: map.width * map.height / 20000 * c.FOOD_AMOUNT,
     isInRoom: location => {
-        return location.x >= 0 && location.x < mapWidth && location.y >= 0 && location.y < mapHeight
+        return location.x >= 0 && location.x < map.width && location.y >= 0 && location.y < map.height
     },    
     topPlayerID: -1,
 };
@@ -4649,21 +4648,31 @@ var maintainloop = (() => {
         util.log('Placing ' + count + ' obstacles!');
     }
     function poisonTiles() {
-        if (room.poisonedTiles > c.MAX_POISONED_TILES) return;
+        if (room.poisonedTiles >= c.MAX_POISONED_TILES) return;
+        if (Math.random() >= (c.P_TILE_CHANCE_1HZ / 100 / (1000 / room.maintainloopSpeed))) return;
         let j = 0;
-        room.setup.forEach(row => { 
+        for (const row of room.setup) {
             let i = 0;
-            row.forEach(cell => {
-                if (!room.tiles[j][i].poisoned && Math.random() < (c.P_TILE_CHANCE_5HZ / 100) && (cell !== 'bas1' && cell !== 'bas2' && cell !== 'bas3' && cell !== 'bas4')) { 
+
+
+            for (const cell of row) {
+                if (
+                    !room.tiles[j][i].poisoned &&
+                    cell !== 'bas1' &&
+                    cell !== 'bas2' &&
+                    cell !== 'bas3' &&
+                    cell !== 'bas4'
+                ) {
                     room.tiles[j][i].poisoned = true;
                     room.tiles[j][i].timePassed = 0;
                     room.poisonedTiles++;
                     sockets.broadcast('A tile has been poisoned!');
+                    return; // prevent excessive poisoning
                 }
                 i++;
-            });
+            } 
             j++;
-        });
+        }
     }
     function unpoisonTiles(delta) {
         let j = 0;
@@ -4768,7 +4777,7 @@ var maintainloop = (() => {
     // The NPC function
     let makenpcs = (() => {
         // Make base protectors if needed.
-        if (c.BASE_PROTECTORS) {
+        if (c.BASE_PROTECTORS && room.gameMode === 'tdm') {
             let f = (loc, team) => { 
                     let o = new Entity(loc);
                     if (typeof c.BASE_PROTECTOR !== 'string' || !Class[c.BASE_PROTECTOR]) throw new Error('invalid base protector');
@@ -4802,7 +4811,8 @@ var maintainloop = (() => {
 
                     let o = new Entity(room.random());
                     let botTeams = [0, 1, 2, 3, 4]
-                    let team = botTeams[Math.floor(Math.random() * (teams + 1))];
+                    let team;
+                    if (room.gameMode === 'tdm') team = botTeams[Math.floor(Math.random() * (teams + 1))];
                     let skillpoints = 40;
                     let botUpgrades = upgrades.flat();
                     let upgrade = botUpgrades[Math.floor(Math.random() * botUpgrades.length)];
@@ -4856,10 +4866,10 @@ var maintainloop = (() => {
                         ], 
                         LEVEL: 45
                     })
-                    o.team = -team;
+                    if (room.gameMode === 'tdm') {o.team = -team; o.color = [17, 10, 11, 12, 15][team];} 
+                    else o.color = 17;
                     o.name += ran.chooseBotName();
                     o.refreshBodyAttributes();
-                    o.color = [17, 10, 11, 12, 15][team];
                     o.isBot = true;
                     bots.push(o);
                 }
@@ -5222,5 +5232,5 @@ function gameloopwrapper() {
 
 gameloopwrapper();
 
-setInterval(maintainloop, 200);
+setInterval(maintainloop, room.maintainloopSpeed);
 setInterval(speedcheckloop, 1000);

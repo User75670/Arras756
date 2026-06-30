@@ -20,6 +20,7 @@
     "custom": {
       "height": 3000,
       "width": 3000,
+      "mode": "tdm",
       "teams": 1,
       "setup": [
         [ "bas1", "roid", "rock", "norm", "norm" ],
@@ -32,7 +33,7 @@
     "default": {
       "height": 1500,
       "width": 1500,
-      "teams": 4,
+      "mode": "ffa",
       "setup": [
         [ "roid", "norm", "norm", "roid" ],
         [ "norm", "nest", "roid", "norm" ],
@@ -43,6 +44,7 @@
     "2tdm": {
       "height": 8000,
       "width": 8000,
+      "mode": "tdm",
       "teams": 2,
       "setup": [
         ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
@@ -102,6 +104,6 @@
   "BOT_PREFIX": "",
   "POISON_TILES": true,
   "MAX_POISONED_TILES": 1,
-  "P_TILE_CHANCE_5HZ": 1,
+  "P_TILE_CHANCE_1HZ": 1,
   "MAX_POISONED_TILE_TIME": 20
 }
