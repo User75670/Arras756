@@ -68,9 +68,10 @@ const room = {
     skillBoost: c.SKILL_BOOST,
     poisonedTiles: 0,
     p_tiles_before: p.now(),
-    tiles: setup.map(row => row.map(() => ({
+    tiles: setup.map(row => row.map(cell => ({
         poisoned: false,
         timePassed: 0,
+        type: cell
     }))),
     scale: {
         square: map.width * map.height / 100000000,
@@ -4649,20 +4650,17 @@ var maintainloop = (() => {
     }
     function poisonTiles() {
         let j = 0;
+        if (Math.random() >= (c.P_TILE_CHANCE_1HZ / 100 / (1000 / room.maintainloopSpeed))) return;
+        let chosenOne = room.tiles[Math.floor(Math.random() * room.ygrid)][Math.floor(Math.random() * room.xgrid)];
+        while (chosenOne.poisoned || (chosenOne.type === 'bas1' || chosenOne.type === 'bas2' || chosenOne.type === 'bas3' || chosenOne.type === 'bas4')) {
+            chosenOne = room.tiles[Math.floor(Math.random() * room.ygrid)][Math.floor(Math.random() * room.xgrid)];
+        }
         room.setup.forEach(row => { 
             let i = 0;
             row.forEach(cell => {
                 if (
-                    !room.tiles[j][i].poisoned &&
-                    (
-                        cell !== 'bas1' &&
-                        cell !== 'bas2' &&
-                        cell !== 'bas3' &&
-                        cell !== 'bas4'
-                    ) && 
-                        Math.random() <= (c.P_TILE_CHANCE_1HZ / 100 / (1000 / room.maintainloopSpeed)) &&
-                        room.poisonedTiles < c.MAX_POISONED_TILES
-
+                    room.tiles[j][i] === chosenOne &&
+                    room.poisonedTiles < c.MAX_POISONED_TILES
                 ) {
                     room.tiles[j][i].poisoned = true;
                     room.tiles[j][i].timePassed = 0;
