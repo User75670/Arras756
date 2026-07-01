@@ -3505,7 +3505,7 @@ const sockets = (() => {
                     socket.status.hasSpawned = true;
                     body.sendMessage('You have spawned! Welcome to ArrasZ.');
                     body.sendMessage('You will be invulnerable until you move or shoot.');
-                    body.sendMessage(c.POISON_TILES ? 'Poisoned tiles are enabled' : 'Poison tiles are disabled');
+                    body.sendMessage(c.POISON_TILES ? 'Poisoned tiles are enabled' : 'Poisoned tiles are disabled');
                     if (c.POISON_TILES) {
                         body.sendMessage(`Poisoned tile chance per 200 ms (5 Hz): ${c.POISONED_TILE_CHANCE_5HZ}%`);
                         body.sendMessage(`Max poisoned tile time: ${c.MAX_POISONED_TILE_TIME} seconds`);
