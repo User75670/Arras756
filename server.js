@@ -47,8 +47,9 @@ const setup = map.setup;
 const ygrid = setup.length;
 const xgrid = setup[0].length;
 let teams = map.teams; 
+if (!Array.isArray(map.disabledBases)) {map.disabledBases = []; util.warn('Invalid disabled bases. Reverting to default.')};
 if ((typeof map.height !== 'number' || typeof map.width !== 'number') && map.height <= 0 || map.width <= 0 || !Number.isFinite(map.width) || !Number.isFinite(map.height)) 
-    {map.height = 1500; map.width = 1500; util.warn('Invalid map width or height. Reverting to default')};
+    {map.height = 1500; map.width = 1500; util.warn('Invalid map width or height. Reverting to default.')};
 
 if ((typeof teams !== 'number' || teams <= 0) && map.mode === 'tdm') {teams = 4; util.warn('Invalid teams. Reverting to default.')}
 for (let i = 1; i < setup.length; i++) {
@@ -84,10 +85,9 @@ const room = {
     },    
     topPlayerID: -1,
 };
-// mimic arras new 2tdm
-room.tiles[6][0].base = false;
-room.tiles[6][12].base = false; 
-
+for (let i = 0; i < map.disabledBases.length; i++) {
+    room.tiles[map.disabledBases[i].y][map.disabledBases[i].x].base = false;
+}
     room.findType = type => {
         let output = [];
         let j = 0;

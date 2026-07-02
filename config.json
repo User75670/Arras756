@@ -67,6 +67,7 @@
       "width": 9000,
       "mode": "tdm",
       "teams": 2,
+      "disabledBases": [{ "y": 6, "x": 0 }, { "y": 6, "x": 12 }],
       "setup": [
         ["grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav"],
         ["grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav", "grav"],
