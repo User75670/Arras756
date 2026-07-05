@@ -4224,7 +4224,6 @@ const sockets = (() => {
                     return;
                 }
                 util.log('A client is trying to connect...');
-                util.log('[INFO] New socket opened from ' + socket.ip);
 
                 socket.on('message', message => incoming(message, socket));
                 socket.on('close', () => { socket.loops.terminate(); close(socket); });
@@ -4238,7 +4237,7 @@ const sockets = (() => {
                 };
                 // Log it
                 clients.push(socket);
-                util.log('[INFO] New socket opened');
+                util.log('[INFO] New socket opened from ' + socket.ip);
             };
         })(),
     };

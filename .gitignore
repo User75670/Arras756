@@ -9,3 +9,4 @@ yarn-error.log*
 test.js
 package-lock.json
 test.txt
+index.html
