@@ -1735,7 +1735,7 @@ class Entity {
         this.isBot = false;
         this.spectator = false;
         this.ignoreWalls = false;
-        this.trap = {};
+        this.trap = {canTrap: false, duration: 0, who: "no one"};
         // This is for collisions
         this.updateAABB = () => {};
         this.getAABB = (() => {
@@ -1931,10 +1931,9 @@ class Entity {
             this.spectator = set.SPECTATOR;
         }
         if (set.TRAP != null) {
-            if (set.TRAP.duration == null || set.TRAP.who == null || set.TRAP.canTrap == null) set.TRAP.canTrap = false;
-            this.trap.canTrap = set.TRAP.canTrap;
-            this.trap.duration = set.TRAP.duration;
-            this.trap.who = set.TRAP.who; 
+            if (set.TRAP.canTrap != null) this.trap.canTrap = set.TRAP.canTrap;;
+            if (set.TRAP.duration != null) this.trap.duration = set.TRAP.duration;
+            if (set.TRAP.who != null) this.trap.who = set.TRAP.who; 
         }
         if (set.VARIES_IN_SIZE != null) { 
             this.settings.variesInSize = set.VARIES_IN_SIZE; 
@@ -1942,6 +1941,11 @@ class Entity {
         }
         if (set.RESET_UPGRADES) {
             this.upgrades = [];
+        }
+        if (set.UPGRADES_TIER_0 != null) { 
+            set.UPGRADES_TIER_0.forEach((e) => {
+                this.upgrades.push({ class: e, tier: 0, level: c.TIER_0, index: e.index });
+            });
         }
         if (set.UPGRADES_TIER_1 != null) { 
             set.UPGRADES_TIER_1.forEach((e) => {
