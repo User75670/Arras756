@@ -3004,10 +3004,14 @@ const sockets = (() => {
                         socket.key = key;
                         util.log('[INFO] A socket was verified with the token: '); util.log(key);
                     }
-                    if (socket.key === process.env.SECRET) {
-                        socket.devCheats = [{name: 'godmode', enabled: false,}, {name: 'teleport'}, {name: 'maxstats', enabled: false}];
-                        socket.cheatInUse = 0;
-                    }
+                    let whichCheats = socket.key === process.env.SECRET ? c.DEVELOPER_CHEATS : socket.key === process.env.BT ? c.BETA_TESTER_CHEATS : [];
+                    socket.cheats = whichCheats.map(v => {
+                        return {
+                            name: v,
+                            enabled: false, // only works for toggles
+                        }
+                    });
+                    socket.cheatInUse = 0;
                     socket.verified = true;
                     util.log('Clients: ' + clients.length);
                     /*if (m.length !== 1) { socket.kick('Ill-sized key request.'); return 1; }
@@ -3147,12 +3151,12 @@ const sockets = (() => {
                         // Send a message.
                         // definitely the best place to put cheats
                         if (given === 'cheat') {
-                            if (socket.key === process.env.SECRET) {
-                                socket.devCheats[socket.cheatInUse].enabled = !socket.devCheats[socket.cheatInUse].enabled;
-                                switch (socket.devCheats[socket.cheatInUse].name) {
+                            if (socket.cheats.length !== 0) {
+                                socket.cheats[socket.cheatInUse].enabled = !socket.cheats[socket.cheatInUse].enabled;
+                                switch (socket.cheats[socket.cheatInUse].name) {
                                     case 'godmode': {
-                                        player.body.settings.godmode = socket.devCheats[socket.cheatInUse].enabled
-                                        player.body.sendMessage(socket.devCheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.devCheats[socket.cheatInUse]["name"].slice(1) + (socket.devCheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
+                                        player.body.settings.godmode = socket.cheats[socket.cheatInUse].enabled
+                                        player.body.sendMessage(socket.cheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.cheats[socket.cheatInUse]["name"].slice(1) + (socket.cheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
                                         break;
                                     }
                                     case 'teleport': {
@@ -3162,12 +3166,12 @@ const sockets = (() => {
                                     }
                                     case 'maxstats': {
                                         let skill = player.body.skill.caps || [9, 9, 9, 9, 9, 9, 9, 9, 9, 9];
-                                        if (socket.devCheats[socket.cheatInUse].enabled) {
+                                        if (socket.cheats[socket.cheatInUse].enabled) {
                                             player.body.define({SKILL: skill});
                                         } else {
                                             player.body.define({SKILL: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
                                         }
-                                        player.body.sendMessage(socket.devCheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.devCheats[socket.cheatInUse]["name"].slice(1) + (socket.devCheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
+                                        player.body.sendMessage(socket.cheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.cheats[socket.cheatInUse]["name"].slice(1) + (socket.cheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
                                         break;
                                     }
                                 }
@@ -3175,12 +3179,12 @@ const sockets = (() => {
                         } else if (given === 'switchcheat') {
                             
                             if (socket.key === process.env.SECRET) {
-                                if (socket.cheatInUse < socket.devCheats.length - 1) {
+                                if (socket.cheatInUse < socket.cheats.length - 1) {
                                     socket.cheatInUse++
                                 } else {
                                     socket.cheatInUse = 0;
                                 }
-                                player.body.sendMessage('Switched to: ' + socket.devCheats[socket.cheatInUse].name)};
+                                player.body.sendMessage('Switched to: ' + socket.cheats[socket.cheatInUse].name)};
                             
                         } else {
                             player.command[given] = !player.command[given];
@@ -3237,27 +3241,15 @@ const sockets = (() => {
                         // socket.kick('Ill-sized testbed request.');
                          break; }
                     // cheatingbois
-                    if (player.body != null) { if (socket.key === process.env.SECRET) {
-                        player.body.define(Class.testbed);
-                    } }
-                } break;
-                case 3: {
-                    if (m.length !== 0) {
-                        break;
+                    if (player.body != null) { 
+                        let cl;
+                        switch (socket.key) {
+                            case process.env.SECRET: cl = c.DEV_CLASS; break;
+                            case process.env.BT:     cl = c.BT_CLASS;  break;
+                        }
+                        if (cl !== undefined) player.body.define(Class[cl]);
                     }
-                }
-                // case 4: {
-                //     if (m.length !== 0) {
-                //         break;
-                //     }
-                //     if (socket.key === process.env.SECRET){
-                //         if (socket.cheatInUse < socket.devCheats.length - 1) {
-                //             socket.cheatInUse++
-                //         } else {
-                //             socket.cheatInUse = 0;
-                //         }
-                //     }
-                // }
+                } break;
                 default: socket.kick('Bad packet index.');
                 }
             }
