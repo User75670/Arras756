@@ -43,7 +43,7 @@
     "old2tdm": {
       "height": 9000,
       "width": 9000,
-      "mode": "ffa",
+      "mode": "tdm",
       "teams": 2,
       "setup": [
         ["bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2"],
