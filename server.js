@@ -3207,7 +3207,7 @@ const sockets = (() => {
                                         const cursor = {x: player.body.x + player.target.x, y: player.body.y + player.target.y};
                                         const range = 1.5;
                                         clients.forEach(socket => {
-                                            if (util.getDistance(socket.player.body, cursor) < socket.player.body.size * range) {global.bannedIps.push(socket.ip); util.debug(global.bannedIps); socket.kick(player.body.name + ' requested to tempban ' + socket.player.body.name + '.')};
+                                            if (util.getDistance(socket.player.body, cursor) < socket.player.body.size * range) {global.bannedIps.push(socket.ip); socket.kick(player.body.name + ' requested to tempban ' + socket.player.body.name + '.')};
                                         });
                                         break;
                                     }
