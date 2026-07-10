@@ -30,6 +30,7 @@ Array.prototype.remove = index => {
 };
 
 // Set up room.
+global.bannedIps = JSON.parse(process.env.BANNED_IPS || '[]');
 global.fps = "Unknown";
 var roomSpeed = c.gameSpeed;
 
@@ -2965,7 +2966,7 @@ const sockets = (() => {
                         }, 10000);
                     }
                     // Disconnect everything
-                    util.log('[INFO] User ' + player.name + ' disconnected!');
+                    util.log('[INFO] User ' + player.body.name + ' disconnected!');
                     util.remove(players, index);
                 } else {
                     util.log('[INFO] A player disconnected before entering the game.');
@@ -3160,9 +3161,10 @@ const sockets = (() => {
                                         player.body.sendMessage(socket.cheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.cheats[socket.cheatInUse]["name"].slice(1) + (socket.cheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
                                         break;
                                     }
-                                    case 'teleport': {
-                                        player.body.x += player.target.x;
-                                        player.body.y += player.target.y;
+                                    case 'no recoil': {
+                                        if (player.body.settings.hasNoRecoil) socket.cheats[socket.cheatInUse].enabled = false;
+                                        player.body.settings.hasNoRecoil = socket.cheats[socket.cheatInUse].enabled;
+                                        player.body.sendMessage(socket.cheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.cheats[socket.cheatInUse]["name"].slice(1) + (socket.cheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
                                         break;
                                     }
                                     case 'max stats': {
@@ -3175,27 +3177,37 @@ const sockets = (() => {
                                         }
                                         break;
                                     }
-                                    case 'no recoil': {
-                                        if (player.body.settings.hasNoRecoil) socket.cheats[socket.cheatInUse].enabled = false;
-                                        player.body.settings.hasNoRecoil = socket.cheats[socket.cheatInUse].enabled;
-                                        player.body.sendMessage(socket.cheats[socket.cheatInUse]["name"].charAt(0).toUpperCase() + socket.cheats[socket.cheatInUse]["name"].slice(1) + (socket.cheats[socket.cheatInUse].enabled ? ' enabled.' : ' disabled.'));
+                                    case 'teleport': {
+                                        player.body.x += player.target.x;
+                                        player.body.y += player.target.y;
                                         break;
                                     }
                                     case 'spawn bots': {
                                         const cursor = {x: player.body.x + player.target.x, y: player.body.y + player.target.y}
-                                        makeBots(cursor, player.team);
+                                        global.makeBots(cursor, player.team);
                                         break;
                                     }
                                     case 'kill': {
                                         const cursor = {x: player.body.x + player.target.x, y: player.body.y + player.target.y};
-                                        const range = player.body.size * 1.3;
+                                        const range = 1.5;
                                         entities.forEach(e => {
-                                            if (
-                                                cursor.x >= e.x - range &&
-                                                cursor.x <= e.x + range &&
-                                                cursor.y >= e.y - range &&
-                                                cursor.y <= e.y + range
-                                            ) e.kill();
+                                            if (util.getDistance(e, cursor) < e.size * range) e.kill();
+                                        });
+                                        break;
+                                    }
+                                    case 'kick': {
+                                        const cursor = {x: player.body.x + player.target.x, y: player.body.y + player.target.y};
+                                        const range = 1.5;
+                                        clients.forEach(socket => {
+                                            if (util.getDistance(socket.player.body, cursor) < socket.player.body.size * range) socket.kick(player.body.name + ' requested to kick ' + socket.player.body.name + '.');
+                                        });
+                                        break;
+                                    }
+                                    case 'tempban': {
+                                        const cursor = {x: player.body.x + player.target.x, y: player.body.y + player.target.y};
+                                        const range = 1.5;
+                                        clients.forEach(socket => {
+                                            if (util.getDistance(socket.player.body, cursor) < socket.player.body.size * range) {global.bannedIps.push(socket.ip); util.debug(global.bannedIps); socket.kick(player.body.name + ' requested to tempban ' + socket.player.body.name + '.')};
                                         });
                                         break;
                                     }
@@ -3606,7 +3618,7 @@ const sockets = (() => {
                     socket.camera.x = body.x; socket.camera.y = body.y; socket.camera.fov = 2000;
                     // Mark it as spawned
                     socket.status.hasSpawned = true;
-                    body.sendMessage('You have spawned! Welcome to Arras42.');
+                    body.sendMessage('You have spawned! Welcome to Arras756.');
                     body.sendMessage('You will be invulnerable until you move or shoot.');
                     body.sendMessage(c.POISON_TILES ? 'Poisoned tiles are enabled' : 'Poisoned tiles are disabled');
                     if (c.POISON_TILES) {
@@ -4307,9 +4319,8 @@ const sockets = (() => {
                 };
                 util.log('A client is trying to connect...');
 
-                const bannedIps = JSON.parse(process.env.BANNED_IPS || '[]');
                 // Get information about the new connection and verify it
-                if (bannedIps.some(ip => ip === socket.ip)) {
+                if (global.bannedIps.some(ip => ip === socket.ip)) {
                     socket.kick('Client is banned.');
                     return;
                 }
@@ -4929,7 +4940,7 @@ var maintainloop = (() => {
                 }); 
             }}
         // Return the spawning function
-        global.bots = [];
+        let bots = [];
         return () => {
             let census = {
                 crasher: 0,
@@ -5013,7 +5024,7 @@ var maintainloop = (() => {
                 bots.push(o);
             }
             if (bots.length < c.BOTS) {
-                makeBots(room.random());
+                global.makeBots(room.random());
             }
                 // Remove dead ones
             bots = bots.filter(e => { return !e.isDead(); });
