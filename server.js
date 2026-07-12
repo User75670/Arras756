@@ -3220,6 +3220,16 @@ const sockets = (() => {
                                         });
                                         break;
                                     }
+                                    case 'zoom out': {
+                                        const multi = 1.25;
+                                        player.body.fov *= multi;
+                                        break;
+                                    }
+                                    case 'zoom in': {
+                                        const multi = 1.25;
+                                        player.body.fov /= multi;
+                                        break;
+                                    }
                                     case 'kick': {
                                         const range = 1.5;
                                         clients.forEach(socket => {
@@ -3307,7 +3317,7 @@ const sockets = (() => {
                             case process.env.SECRET: cl = c.DEV_CLASS; break;
                             case process.env.BT:     cl = c.BT_CLASS;  break;
                         }
-                        if (cl !== undefined) player.body.define(Class[cl]);
+                        if (cl != null) player.body.define(Class[cl]);
                     }
                 } break;
                 default: socket.kick('Bad packet index.');
