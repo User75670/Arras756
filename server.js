@@ -913,7 +913,47 @@ class io_fleeAtLowHealth extends IO {
     }
 
 }
+class io_reverseceles extends IO {
+  constructor(body) {
+    super(body);
+    this.a = 0;
+  }
 
+  think(input) {
+    this.a -= 0.025;
+    let offset = 0;
+    if (this.body.bond != null) {
+      offset = this.body.bound.angle;
+    }
+    return {
+      target: {
+        x: Math.cos(this.a + offset),
+        y: Math.sin(this.a + offset),
+      },
+      main: true,
+    };
+  }
+};
+class io_spinceles extends IO {
+  constructor(body) {
+    super(body);
+    this.a = 0;
+  }
+  think(input) {
+    this.a += 0.02;
+    let offset = 0;
+    if (this.body.bond != null) {
+      offset = this.body.bound.angle;
+    }
+    return {
+      target: {
+        x: Math.cos(this.a + offset),
+        y: Math.sin(this.a + offset),
+      },
+      main: true,
+    };
+  }
+};
 /***** ENTITIES *****/
 // Define skills
 const skcnv = {
