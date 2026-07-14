@@ -2106,6 +2106,7 @@ class Entity {
                 o = new Entity(this, this.master);
                     ((Array.isArray(def.TYPE)) ? def.TYPE : [def.TYPE]).forEach(type => o.define(type));
                     o.bindToMaster(def.POSITION, this);
+                    o.spectator = true; // bots won't target turrets
             });
         }
         if (set.mockup != null) {
