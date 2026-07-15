@@ -1773,6 +1773,7 @@ class Entity {
         this.team = this.id;
         this.team = master.team;
         this.isBot = false;
+        this.isFood = false;
         this.spectator = false;
         this.ignoreWalls = false;
         // This is for collisions
@@ -2107,6 +2108,7 @@ class Entity {
                     ((Array.isArray(def.TYPE)) ? def.TYPE : [def.TYPE]).forEach(type => o.define(type));
                     o.bindToMaster(def.POSITION, this);
                     o.spectator = true; // bots won't target turrets
+                    o.food = true;
             });
         }
         if (set.mockup != null) {
