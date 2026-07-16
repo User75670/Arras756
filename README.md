@@ -11,4 +11,4 @@
 ```
 * These are just generic tokens, you can change if you need to.
 * To use a token put this after the link: /#key=TOKEN and replace TOKEN with the actual token you want to use
-* It should look like this: https://example.com/#key=TOKEN (the link is just an example, it may vary depending on how you host the game)
+* It should look like this: https://example.com/#key=TOKEN (the link is just an example link, it may vary depending on how you host the game)
