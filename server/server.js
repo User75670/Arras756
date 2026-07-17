@@ -3198,7 +3198,7 @@ const sockets = (() => {
                         case 1: given = 'autofire'; break;
                         case 2: given = 'override'; break;
                         case 3: given = 'cheat'; break;
-                        case 4: given = 'switchcheat'; break;
+                        case 4: given = 'nextcheat'; break;
                         // Kick if it sent us shit.
                         default: util.log(tog); socket.kick('Bad toggle.'); return 1;
                     } 
@@ -3309,7 +3309,7 @@ const sockets = (() => {
                                     }
                                 }
                             }
-                        } else if (given === 'switchcheat') {
+                        } else if (given === 'nextcheat') {
                             
                             if (socket.cheats.length !== 0) {
                                 if (socket.cheatInUse < socket.cheats.length - 1) {
@@ -3385,6 +3385,16 @@ const sockets = (() => {
                         if (cl != null) player.body.define(Class[cl]);
                     }
                 } break;
+                case 'previouscheat': { // switching to previous cheat, could have organized better but it isn't broke so I'm not fixing
+                    if (socket.cheats.length !== 0) {
+                        if (socket.cheatInUse > 0) {
+                            socket.cheatInUse--;
+                        } else {
+                            socket.cheatInUse = socket.cheats.length - 1;
+                        }
+                        player.body.sendMessage('Switched to: ' + socket.cheats[socket.cheatInUse].name)};
+                    break;
+                }
                 default: socket.kick('Bad packet index.');
                 }
             }

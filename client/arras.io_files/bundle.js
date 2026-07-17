@@ -11,6 +11,7 @@
       KEY_CHOOSE_5: "J",
       KEY_CHOOSE_6: "K",
       KEY_SPECIAL: "`",
+      KEY_SMTH: "M",
     },
     KEY_AUTO_FIRE: 69,
     KEY_AUTO_SPIN: 67,
@@ -59,6 +60,7 @@
     KEY_MOUSE_2: 16,
     KEY_SPECIAL: 192,
     KEY_SPECIAL_ALT: 223,
+    KEY_SMTH: 77,
     KEY_SUICIDE: 79,
     i: 1920,
     j: 1080,
@@ -637,6 +639,9 @@
                   case c.KEY_SPECIAL:
                     a.u.m("0");
                     a.nb = !0;
+                    break;
+                  case c.KEY_SMTH:
+                    a.u.m("previouscheat");
                     break;
                   case c.KEY_SUICIDE:
                     a.u.m("K");
