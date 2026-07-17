@@ -3242,6 +3242,11 @@ const sockets = (() => {
                                         global.makeBots(cursor, player.team);
                                         break;
                                     }
+                                    case 'clear': {
+                                        entities.forEach(e => {
+                                            if (e.isFood) e.kill();
+                                        });
+                                    }
                                     case 'kill': {
                                         const range = 1.5;
                                         entities.forEach(e => {
