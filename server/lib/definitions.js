@@ -4581,9 +4581,9 @@ exports.single = {
                         }, },
                 ],
             };
-exports.warriordrone = {
+exports.generaldrone = {
     PARENT: [exports.drone],
-    LABEL: 'Warrior Drone',
+    LABEL: 'General Drone',
     SHAPE: [[-0.8,-1.165],[-0,0],[-0.8,1.165],[1.3,0]],
     GUNS: [ 
         { /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -4604,9 +4604,9 @@ exports.warriordrone = {
         },
     ],
 }
-exports.warrior = {
+exports.general = {
     PARENT: [exports.genericTank],
-    LABEL: 'Warrior',
+    LABEL: 'General',
     DANGER: 7,
     SHAPE: [[-0.8,-1.165],[-0,0],[-0.8,1.165],[1.3,0]],
     BODY: {
@@ -4621,7 +4621,7 @@ exports.warrior = {
         POSITION: [  5,    16,     1,      6,      0,      60,      0,   ],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: exports.warriordrone,
+                TYPE: exports.generaldrone,
                 STAT_CALCULATOR: gunCalcNames.drone,
                 WAIT_TO_CYCLE: true,
                 AUTOFIRE: true,
@@ -4632,7 +4632,7 @@ exports.warrior = {
         POSITION: [  5,    16,     1,      6,      0,      -60,      0,   ],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: exports.warriordrone,
+                TYPE: exports.generaldrone,
                 STAT_CALCULATOR: gunCalcNames.drone,
                 WAIT_TO_CYCLE: true,
                 AUTOFIRE: true,
@@ -4702,7 +4702,7 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machine, 
 
     exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner],
         exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner, exports.spawnerdrive],
-        exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrap, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander, exports.warrior],  
+        exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrap, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander, exports.general],  
         exports.underseer.UPGRADES_TIER_3 = [exports.necromancer],
         exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autocruiser, exports.commander],
     
@@ -7934,6 +7934,26 @@ exports.eggJuggernautProp = {
     PARENT: [exports.genericTank],
     COLOR: 9,
 }
+exports.droneTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Spinner',
+    COLOR: 16,
+    INDEPENDENT: true,
+    FACING_TYPE: 'autospin',
+    MAX_CHILDREN: 3,
+    CONTROLLERS: ["nearestDifferentMaster"],
+    GUNS: [, 
+        {      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+            POSITION: [   0,     20,    1,     0,      0,      0,      0,   ], 
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.drone, g.over]),
+                    TYPE: exports.drone,
+                    AUTOFIRE: true,
+                    SYNCS_SKILLS: true,
+                    STAT_CALCULATOR: gunCalcNames.drone,
+                }, }]
+};
+
 exports.dreadnought = new Dreadnought('Dreadnought', 'egg');
 exports.pacifier = new Dreadnought('Pacifier', 'egg', [
         {        /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -7976,7 +7996,20 @@ exports.pacifierJuggernaut = Dreadnought.combine('Pacifier-Juggernaut', exports.
     },
     // 1.5x more health than normal egg dreadnought
 ], {BODY: {HEALTH: base.HEALTH * 3}})
-
+exports.pacifierGuard = Dreadnought.combine('Pacifier-Guard', exports.pacifier, [
+    {
+        POSITION: [base.SIZE * 1.3, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggProp]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.droneTurret]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.genericTank]
+    }
+])
 exports.sword = new Dreadnought('Sword', 'egg', [
     {
      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -8017,7 +8050,20 @@ exports.swordJuggernaut = Dreadnought.combine('Sword-Juggernaut', exports.sword,
         TYPE: [exports.eggJuggernautProp]
     },
 ], {BODY: {HEALTH: base.HEALTH * 3}})
-
+exports.swordGuard = Dreadnought.combine('Sword-Guard', exports.sword, [
+    {
+        POSITION: [base.SIZE * 1.3, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggProp]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.droneTurret]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.genericTank]
+    }
+])
 exports.peacekeeper = new Dreadnought('Peacekeeper', 'egg', [
     { /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
         POSITION: [  17,    9,      1,      0,      0,      0,      0,   ], 
@@ -8056,7 +8102,20 @@ exports.peacekeeperJuggernaut = Dreadnought.combine('Peacekeeper-Juggernaut', ex
         TYPE: [exports.eggJuggernautProp]
     },
 ], {BODY: {HEALTH: base.HEALTH * 3}})
-
+exports.peacekeeperGuard = Dreadnought.combine('Peacekeeper-Guard', exports.peacekeeper, [
+    {
+        POSITION: [base.SIZE * 1.3, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggProp]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.droneTurret]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.genericTank]
+    }
+])
 exports.invader = new Dreadnought('Invader', 'egg', [
     {   /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
         POSITION: [   6,     10,    1.2,     8,      0,      0,      0,   ], 
@@ -8099,6 +8158,20 @@ exports.invaderJuggernaut = Dreadnought.combine('Invader-Juggernaut', exports.in
         TYPE: [exports.eggJuggernautProp]
     },
 ], {BODY: {HEALTH: base.HEALTH * 3}})
+exports.invaderGuard = Dreadnought.combine('Invader-Guard', exports.invader, [
+    {
+        POSITION: [base.SIZE * 1.3, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggProp]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.droneTurret]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.genericTank]
+    }
+])
 exports.centaur = new Dreadnought('Centaur', 'egg', [
     {POSITION: [  13.25,     7,      1,      0,      0,      0,      0,   ],}, 
     {
@@ -8139,13 +8212,27 @@ exports.centaurJuggernaut = Dreadnought.combine('Centaur-Juggernaut', exports.ce
         TYPE: [exports.eggJuggernautProp]
     },
 ], {BODY: {HEALTH: base.HEALTH * 3}})
+exports.centaurGuard = Dreadnought.combine('Centaur-Guard', exports.centaur, [
+    {
+        POSITION: [base.SIZE * 1.3, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggProp]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.droneTurret]
+    },
+    {
+        POSITION: [10, 0, 0, 0, 0, 1],
+        TYPE: [exports.genericTank]
+    }
+])
 // dreadnought upgrades
 exports.dreadnought.UPGRADES_TIER_0 = [exports.sword, exports.pacifier, exports.peacekeeper, exports.invader, exports.centaur];
-exports.sword.UPGRADES_TIER_0 = [exports.swordTracker, exports.swordByte, exports.swordJuggernaut];
-exports.pacifier.UPGRADES_TIER_0 = [exports.pacifierTracker, exports.pacifierByte, exports.pacifierJuggernaut];
-exports.peacekeeper.UPGRADES_TIER_0 = [exports.peacekeeperTracker, exports.peacekeeperByte, exports.peacekeeperJuggernaut];
-exports.invader.UPGRADES_TIER_0 = [exports.invaderTracker, exports.invaderByte, exports.invaderJuggernaut];
-exports.centaur.UPGRADES_TIER_0 = [exports.centaurTracker, exports.centaurByte, exports.centaurJuggernaut];
+exports.sword.UPGRADES_TIER_0 = [exports.swordTracker, exports.swordByte, exports.swordJuggernaut, exports.swordGuard];
+exports.pacifier.UPGRADES_TIER_0 = [exports.pacifierTracker, exports.pacifierByte, exports.pacifierJuggernaut, exports.pacifierGuard];
+exports.peacekeeper.UPGRADES_TIER_0 = [exports.peacekeeperTracker, exports.peacekeeperByte, exports.peacekeeperJuggernaut, exports.peacekeeperGuard];
+exports.invader.UPGRADES_TIER_0 = [exports.invaderTracker, exports.invaderByte, exports.invaderJuggernaut, exports.invaderGuard];
+exports.centaur.UPGRADES_TIER_0 = [exports.centaurTracker, exports.centaurByte, exports.centaurJuggernaut, exports.centaurGuard];
 
 
 
@@ -8232,13 +8319,14 @@ exports.bases = {
     PARENT: [exports.menu],
     LABEL: 'Bases',
     TURRETS: [{
-        POSITION: [base.SIZE * 1.6, 0, 0, 0, 0, 0],
+        POSITION: [base.SIZE * 2, 0, 0, 0, 0, 0],
         TYPE: [exports.dominationBody]
     }]
 }
 exports.obstacles = {
     PARENT: [exports.menu],
     LABEL: 'Obstacles',
+    SHAPE: -9
 }
 exports.arenaClosers = {
     PARENT: [exports.menu],
@@ -8247,6 +8335,7 @@ exports.arenaClosers = {
 exports.food = {
     PARENT: [exports.menu],
     LABEL: 'Food',
+    SHAPE: 4
 }
 exports.funTanks = {
     PARENT: [exports.menu],

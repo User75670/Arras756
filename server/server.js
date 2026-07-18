@@ -3232,6 +3232,7 @@ const sockets = (() => {
                                         } else {
                                             player.body.define({SKILL: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
                                         }
+                                        player.body.refreshBodyAttributes();
                                         break;
                                     }
                                     case 'teleport': {
