@@ -5448,7 +5448,7 @@ var speedcheckloop = (() => {
                 sockets.broadcast("Server overloaded, Restarting!");
                 setTimeout(() => {
                     process.exit(1);
-                }, 2000)
+                }, 1000)
             }
         } else {
             fails = 0;
