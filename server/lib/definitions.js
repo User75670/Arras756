@@ -8118,7 +8118,7 @@ exports.peacekeeperGuard = Dreadnought.combine('Peacekeeper-Guard', exports.peac
 ])
 exports.invader = new Dreadnought('Invader', 'egg', [
     {   /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-        POSITION: [   6,     10,    1.2,     8,      0,      0,      0,   ], 
+        POSITION: [   5,     10,    1.2,     8,      0,      0,      0,   ], 
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.drone, g.over]),
             TYPE: exports.drone,
