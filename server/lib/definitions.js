@@ -154,6 +154,7 @@ const g = { // Gun info here
     huge:               [1,     1,     1,      100,      1,     1,     1,      1,      1,      1,      1,      1,      1],
     big:                [1,     1,     1,      10,      1,     1,     1,      1,      1,      1,      1,      1,      1],
     doublesize:         [1,     1,     1,      2,      1,     1,     1,      1,      1,      1,      1,      1,      1],
+    moresize:         [1,     1,     1,      1.5,      1,     1,     1,      1,      1,      1,      1,      1,      1],
     micro: [1, 1, 1, 0.4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     small: [1, 1, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     tinyrange:          [1,     1,     1,      1,        1,     1,     1,      1,      1,      0.001,   1,     1,     1],
@@ -6173,7 +6174,7 @@ exports.omegaPentagonGenerator = {
       /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
       POSITION: [12, 12, 1.4, 4, 0, 0, 0],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.doublesize, g.doublesize, g.doublesize]),
+        SHOOT_SETTINGS: combineStats([g.basic, g.doublesize, g.doublesize, g.moresize]),
         TYPE: exports.omegaPentagon,
       },
     },
