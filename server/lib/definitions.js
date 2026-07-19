@@ -400,6 +400,29 @@ exports.food = {
 
 const basePolygonDamage = 1;
 const basePolygonHealth = 2;
+exports.omegaPentagon = {
+    PARENT: [exports.food],
+    FOOD: {
+        LEVEL: 6,
+        IS_FOOD: true,
+    },
+    LABEL: 'Omega Pentagon',
+    VALUE: 100000,
+    SHAPE: 5,
+    SIZE: 84,
+    COLOR: 14,
+    BODY: {
+        DAMAGE: 2 * basePolygonDamage,
+        DENSITY: 130,
+        HEALTH: 1500 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 4),
+        SHIELD: 60 * basePolygonHealth,
+        REGEN: 1,
+        ACCELERATION: 0.0021428571428571
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+};
 exports.hugePentagon = {
     PARENT: [exports.food],
     FOOD: {
@@ -418,6 +441,7 @@ exports.hugePentagon = {
         RESIST: Math.pow(1.25, 3),
         SHIELD: 40 * basePolygonHealth,
         REGEN: 0.6,
+        ACCELERATION: 0.0025
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
@@ -440,6 +464,7 @@ exports.bigPentagon = {
         RESIST: Math.pow(1.25, 2),
         SHIELD: 20 * basePolygonHealth,
         REGEN: 0.2,
+        ACCELERATION: 0.003
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
@@ -461,6 +486,7 @@ exports.pentagon = {
         HEALTH: 10 * basePolygonHealth,
         RESIST: 1.25,
         PENETRATION: 1.1,
+        ACCELERATION: 0.00375
     },
     DRAW_HEALTH: true,
 };
@@ -481,6 +507,7 @@ exports.triangle = {
         HEALTH: 3 * basePolygonHealth,
         RESIST: 1.15,
         PENETRATION: 1.5,
+        ACCELERATION: 0.005,
     },
     DRAW_HEALTH: true,
 };
@@ -500,6 +527,7 @@ exports.square = {
         DENSITY: 4,
         HEALTH: basePolygonHealth,
         PENETRATION: 2,
+        ACCELERATION: 0.0075
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -521,6 +549,7 @@ exports.egg = {
         DENSITY: 2,
         HEALTH: 0.0011,
         PUSHABILITY: 0,
+        ACCELERATION: 0.015,
     },
     DRAW_HEALTH: false,
 };
@@ -541,6 +570,7 @@ exports.greenpentagon = {
         HEALTH: 200,
         RESIST: 1.25,
         PENETRATION: 1.1,
+        ACCELERATION: 0.00375
     },
     DRAW_HEALTH: true,
 };
@@ -560,6 +590,7 @@ exports.greentriangle = {
         HEALTH: 60,
         RESIST: 1.15,
         PENETRATION: 1.5,
+        ACCELERATION: 0.005,
     },
     DRAW_HEALTH: true,
 };
@@ -578,6 +609,7 @@ exports.greensquare = {
         DENSITY: 4,
         HEALTH: 20,
         PENETRATION: 2,
+        ACCELERATION: 0.0075
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -600,6 +632,7 @@ exports.gem = {
         PENETRATION: 2,
         RESIST: 2,
         PUSHABILITY: 0.25,
+        ACCELERATION: 0.015,
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -6120,6 +6153,32 @@ exports.alphaPentagonGenerator = {
     },
   ],
 };
+exports.omegaPentagonGenerator = {
+  LABEL: "Omega Pentagon Generator",
+  COLOR: 14,
+  SHAPE: 5,
+  TURRETS: [
+    {
+      /*  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [16, 0, 0, 0, 0, 1],
+      TYPE: [exports.omegaPentagon, { COLOR: 14 }],
+    },
+  ],
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [14, 12, 1, 4, 0, 0, 0],
+    },
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [12, 12, 1.4, 4, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.doublesize, g.doublesize, g.doublesize]),
+        TYPE: exports.omegaPentagon,
+      },
+    },
+  ],
+}
 exports.crasherGenerator = {
   PARENT: [exports.generatorBase],
   LABEL: "Crasher Generator",
@@ -8006,7 +8065,7 @@ exports.pacifierByte = Dreadnought.combine('Pacifier-Byte', exports.pacifier, [
         TYPE: [exports.eggProp]
     },
     {
-        POSITION: [10, 0, 0, 180, 360, 1],
+        POSITION: [10, 0, 0, 0, 360, 1],
         TYPE: [exports.autoTurret, {INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"]}]
     },
 ])
@@ -8061,7 +8120,7 @@ exports.swordByte = Dreadnought.combine('Sword-Byte', exports.sword, [
         TYPE: [exports.eggProp]
     },
     {
-        POSITION: [10, 0, 0, 180, 360, 1],
+        POSITION: [10, 0, 0, 0, 360, 1],
         TYPE: [exports.autoTurret, {INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"]}]
     },
 ])
@@ -8113,7 +8172,7 @@ exports.peacekeeperByte = Dreadnought.combine('Peacekeeper-Byte', exports.peacek
         TYPE: [exports.eggProp]
     },
     {
-        POSITION: [10, 0, 0, 180, 360, 1],
+        POSITION: [10, 0, 0, 0, 360, 1],
         TYPE: [exports.autoTurret, {INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"]}]
     },
 ])
@@ -8169,7 +8228,7 @@ exports.invaderByte = Dreadnought.combine('Invader-Byte', exports.invader, [
         TYPE: [exports.eggProp]
     },
     {
-        POSITION: [10, 0, 0, 180, 360, 1],
+        POSITION: [10, 0, 0, 0, 360, 1],
         TYPE: [exports.autoTurret, {INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"]}]
     },
 ])
@@ -8223,7 +8282,7 @@ exports.centaurByte = Dreadnought.combine('Centaur-Byte', exports.centaur, [
         TYPE: [exports.eggProp]
     },
     {
-        POSITION: [10, 0, 0, 180, 360, 1],
+        POSITION: [10, 0, 0, 0, 360, 1],
         TYPE: [exports.autoTurret, {INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"]}]
     },
 ])
@@ -8388,7 +8447,7 @@ exports.permsMenu = {
 // should've made some function to make upgrades easily but too hard
 exports.eggGenerator.UPGRADES_TIER_0 = [
     exports.spectator, 
-    exports.alphaPentagonGenerator, 
+    exports.omegaPentagonGenerator, 
     exports.squareGenerator, 
     exports.basic,
     exports.gemGenerator,
@@ -8424,6 +8483,12 @@ exports.betaPentagonGenerator.UPGRADES_TIER_0 = [
 exports.alphaPentagonGenerator.UPGRADES_TIER_0 = [
     exports.spectator, 
     exports.betaPentagonGenerator, 
+    exports.omegaPentagonGenerator,
+    exports.basic
+];
+exports.omegaPentagonGenerator.UPGRADES_TIER_0 = [
+    exports.spectator, 
+    exports.alphaPentagonGenerator, 
     exports.eggGenerator,
     exports.basic
 ];
@@ -8537,6 +8602,7 @@ exports.food.UPGRADES_TIER_0 = [
     exports.pentagon,
     exports.bigPentagon,
     exports.hugePentagon,
+    exports.omegaPentagon,
     exports.gem,
     exports.greensquare,
     exports.greentriangle,
