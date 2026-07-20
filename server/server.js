@@ -47,11 +47,10 @@ if (!Array.isArray(map.setup[0])) throw new Error('invalid setup row (first row)
 const setup = map.setup;
 const ygrid = setup.length;
 const xgrid = setup[0].length;
-let teams = map.teams; 
 if ((typeof map.height !== 'number' || typeof map.width !== 'number') && map.height <= 0 || map.width <= 0 || !Number.isFinite(map.width) || !Number.isFinite(map.height)) 
     {map.height = 1500; map.width = 1500; util.warn('Invalid map width or height. Reverting to default.')};
 
-if ((typeof teams !== 'number' || teams <= 0) && map.mode === 'tdm') {teams = 4; util.warn('Invalid teams. Reverting to default.')}
+if ((typeof map.teams !== 'number' || map.teams <= 0) && map.mode === 'tdm') {map.teams = 4; util.warn('Invalid teams. Reverting to default.')}
 for (let i = 1; i < setup.length; i++) {
     if (!Array.isArray(setup[i])) throw new Error('invalid setup row');
     if (setup[i].length !== xgrid) throw new Error('xgrid length mismatch');
@@ -68,6 +67,7 @@ const room = {
     gameMode: map.mode,   
     skillBoost: c.SKILL_BOOST,
     poisonedTiles: 0,
+    teams: map.teams,
     tiles: setup.map(row => row.map(cell => ({
         poisoned: false,
         timePassed: 0,
@@ -3670,9 +3670,9 @@ const sockets = (() => {
                             players.forEach(p => { 
                                 census[p.team - 1]++; 
                                 if (p.body != null) { scoreCensus[p.team - 1] += p.body.skill.score; }
-                            });
+                            }); 
                             let possiblities = [];
-                            for (let i=0, m=0; i<teams; i++) {
+                            for (let i=0, m=0; i<room.teams; i++) {
                                 let v = Math.round(1000000 * (room['bap'+(i+1)].length + 1) / (census[i] + 1) / scoreCensus[i]);
                                 if (v > m) {
                                     m = v; possiblities = [i];
@@ -5078,7 +5078,7 @@ var maintainloop = (() => {
                     o.color = [10, 11, 12, 15][team-1];
                     o.onDeath = () => f(loc, team);
             };
-            for (let i=1; i<=teams; i++) {
+            for (let i=1; i<=room.teams; i++) {
                 room['bap' + i].forEach((loc) => { f(loc, i); }); 
             }}
         // Return the spawning function
@@ -5104,7 +5104,7 @@ var maintainloop = (() => {
 
                 let o = new Entity(loc);
                 let botTeams = [1, 2, 3, 4]
-                if (room.gameMode === 'tdm' && team === undefined) team = botTeams[Math.floor(Math.random() * (teams))];
+                if (room.gameMode === 'tdm' && team === undefined) team = botTeams[Math.floor(Math.random() * (room.teams))];
                 let skillpoints = levelers.length;
                 let botUpgrades = upgrades.flat();
                 let upgrade = botUpgrades[Math.floor(Math.random() * botUpgrades.length)];
