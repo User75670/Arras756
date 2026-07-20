@@ -1774,7 +1774,7 @@ class Entity {
         this.isBot = false;
         this.isFood = false;
         this.spectator = false;
-        this.ignoreWalls = false;
+        this.arenaCloser = false;
         // This is for collisions
         this.updateAABB = () => {};
         this.getAABB = (() => {
@@ -2047,8 +2047,8 @@ class Entity {
                 this.isFood = set.IS_FOOD;
             }
         }
-        if (set.IGNORE_WALLS != null) {
-            this.ignoreWalls = set.IGNORE_WALLS;
+        if (set.ARENA_CLOSER != null) {
+            this.arenaCloser = set.ARENA_CLOSER;
         }
         if (set.LAYER != null) {
             this.layer = set.LAYER;
@@ -2477,7 +2477,8 @@ class Entity {
                     (this.team !== -4 && (room.isIn('bas4', loc) || room.isIn('bap4', loc)))
                 ) &&
                 !this.settings.godmode &&
-                !this.spectator
+                !this.spectator &&
+                !this.arenaCloser 
             ) { this.kill(); }
         }
         if (c.POISON_TILES && room.isInRoom(this)) {
@@ -4810,7 +4811,7 @@ var gameloop = (() => {
             // Handle walls
             if ((instance.type === 'wall' || other.type === 'wall')) {
                 let tank = instance.type !== 'wall' ? instance : other;
-                if (tank.ignoreWalls) return;
+                if (tank.arenaCloser) return;
                 let a = (instance.type === 'bullet' || other.type === 'bullet') ? 
                     1 + 10 / (Math.max(instance.velocity.length, other.velocity.length) + 10) : 
                     1;

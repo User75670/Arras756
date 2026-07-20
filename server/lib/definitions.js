@@ -1064,7 +1064,7 @@ exports.genericTank = {
     MAX_CHILDREN: 0,
     DAMAGE_EFFECTS: false,
     SPECTATOR: false,
-    IGNORE_WALLS: false,
+    ARENA_CLOSER: false,
     SPIN_SPEED: 1,
     TRAP: {canTrap: false},
     BODY: { // def
@@ -5731,7 +5731,7 @@ exports.railgun = {
 exports.acBullet = {
     PARENT: [exports.bullet],
     LAYER: 13,
-    IGNORE_WALLS: true
+    ARENA_CLOSER: true
 }
 exports.closerBase = {
     PARENT: [exports.genericTank],
@@ -5750,7 +5750,7 @@ exports.closerBase = {
     SKILL: skillSet({ rld: 1, dam: 1, pen: 1, str: 1, spd: 1, atk: 1, hlt: 1, shi: 1, rgn: 1, mob: 1 }),
     DRAW_HEALTH: false,
     HITS_OWN_TYPE: "never",
-    IGNORE_WALLS: true,
+    ARENA_CLOSER: true,
     LAYER: 13,
 }
 exports.arenaCloser = {
