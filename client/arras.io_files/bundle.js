@@ -2574,6 +2574,14 @@
       break;
     }
   })(`
+# Idk what to call this update (July 20 2026)
+- Updated juggernaut.
+- Added guard branch to egg dreadnoughts, spawns 3 independent drones.
+- Game now broadcasts player name and player count when someone joins.
+- If your name has only spaces, those will be removed on join.
+- Added a dev-only permission which still has the same developer tank but has access to kick and temp ban commands.
+- Removed kick and temp ban from normal developer.
+
 # Dreadnoughts + other (July 18 2026)
 - Added egg dreadnoughts
 - Organized menus better
