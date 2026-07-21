@@ -14,7 +14,7 @@
   "TPS": 30,
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
-  "MAP": "zombie",
+  "MAP": "2tdm",
   "MAPS": {
     "custom": {
       "height": 3000,
