@@ -1571,6 +1571,7 @@
         case "dbc1":
         case "spw1":
         case "por1":
+        case "snc1":
           return w(10);
         case "bas2":
         case "bap2":
@@ -1579,6 +1580,7 @@
         case "dbc2":
         case "spw2":
         case "por2":
+        case "snc2":
           return w(11);
         case "bas3":
         case "bap3":
@@ -1587,6 +1589,7 @@
         case "dbc3":
         case "spw3":
         case "por3":
+        case "snc3":
           return w(12);
         case "bas4":
         case "bap4":
@@ -1595,6 +1598,7 @@
         case "dbc4":
         case "spw4":
         case "por4":
+        case "snc4":
           return w(15);
         case "domx":
         case "dom0":
@@ -1609,6 +1613,8 @@
           return w(6);
         case "nest":
           if (m.l.fb) return w(14);
+        case "spwn":
+          return w(13)
         default:
           return w(18);
       }

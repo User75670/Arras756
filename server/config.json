@@ -14,7 +14,7 @@
   "TPS": 30,
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
-  "MAP": "2tdm",
+  "MAP": "zombie",
   "MAPS": {
     "custom": {
       "height": 3000,
@@ -102,6 +102,22 @@
         ["bap1", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "bap2"],
         ["bap1", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "bap2"]
       ]
+    },
+    "zombie": {
+      "height": 6000,
+      "width": 6000,
+      "mode": "zombie",
+      "setup": [
+        ["nest", "rock", "rock", "rock", "snc1", "rock", "rock", "rock", "nest"],
+        ["nest", "rock", "rock", "rock", "rock", "rock", "rock", "rock", "nest"],
+        ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+        ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+        ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+        ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+        ["roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid"],
+        ["roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid", "roid"],
+        ["spwn", "spwn", "spwn", "spwn", "spwn", "spwn", "spwn", "spwn", "spwn"]
+      ]
     }
   },
   "DAMAGE_CONSTANT": 0.6,
@@ -144,7 +160,7 @@
   "BASE_PROTECTORS": true,
   "BASE_PROTECTOR": "baseProtector",
   "BOT_PREFIX": "[BOT] ",
-  "POISON_TILES": true,
+  "POISON_TILES": false,
   "MAX_POISONED_TILES": 3,
   "POISONED_TILE_CHANCE_5HZ": 0.5,
   "MAX_POISONED_TILE_TIME": 60,
