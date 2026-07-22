@@ -8669,24 +8669,27 @@ exports.freeMisc = {...exports.misc}
 exports.bases = {
     PARENT: [exports.menu],
     LABEL: 'Bases',
+    HAS_NO_RECOIL: true,
     TURRETS: [{
-        POSITION: [base.SIZE * 2, 0, 0, 0, 0, 0],
+        POSITION: [25, 0, 0, 0, 360, 0],
         TYPE: [exports.dominationBody]
     }]
 }
 exports.baseProtectors = {
     PARENT: [exports.menu],
     LABEL: 'Base Protectors',
+    HAS_NO_RECOIL: true,
     TURRETS: [{
-        POSITION: [base.SIZE * 2, 0, 0, 0, 0, 0],
+        POSITION: [25, 0, 0, 0, 360, 0],
         TYPE: [exports.dominationBody]
     }]
 }
 exports.sanctuaries = {
     PARENT: [exports.menu],
     LABEL: 'Sanctuaries',
+    HAS_NO_RECOIL: true,
     TURRETS: [{
-        POSITION: [base.SIZE * 2, 0, 0, 0, 0, 0],
+        POSITION: [25, 0, 0, 0, 360, 0],
         TYPE: [exports.dominationBody]
     }]
 }
@@ -8988,6 +8991,7 @@ exports.trustedBossesMenu.UPGRADES_TIER_0 = [
     exports.celestialBosses
 ]
 exports.trustedMisc.UPGRADES_TIER_0 = [
+    exports.sanctuaries,
     exports.obstacles,
     exports.food,
 ]
