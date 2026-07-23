@@ -8620,18 +8620,38 @@ exports.zombieBase = {
 }
 exports.zombie = {
     PARENT: [exports.zombieRamBase],
-    DANGER: 6,
+    DANGER: 5,
     SKILL: skillSet({hlt: 0.8, shi: 0.3, atk: 0.4, mob: 0.2}),
     GUNS: repeatGuns(2, {POSITION: [20, 6, 0, 0, 7, 0, 0]}, {yMod: -14})
 }
 exports.babyzombie = {
     PARENT: [exports.zombieRamBase],
-    DANGER: 6,
+    DANGER: 5,
     LABEL: 'Baby Zombie',
     SIZE: base.SIZE * 0.8,
     SKILL: skillSet({hlt: 0.2, shi: 0.1, atk: 0.7, mob: 1}),
     BODY: {SPEED: base.SPEED * 2},
     GUNS: repeatGuns(2, {POSITION: [18, 5, 0, 0, 7, 0, 0]}, {yMod: -14})
+}
+exports.sniperzombie = {
+    ...exports.sniper,
+    UPGRADES_TIER_2: [],
+    UPGRADES_TIER_3: [],
+    PARENT: [exports.zombieBase],
+    DANGER: 6,
+    LABEL: 'Sniper Zombie',
+    SKILL: skillSet({
+        dam: 0.9,
+        pen: 1,
+        rld: 0.4,
+        str: 0.6,
+        spd: 1,
+
+        mob: 0.2,
+        hlt: 0.2,
+        rgn: 0.1,
+        atk: 0.2,
+    })
 }
 exports.bossesMenu = {
     PARENT: [exports.menu],
@@ -8989,7 +9009,8 @@ exports.arrasMenu.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, expo
 exports.zombiedefense.UPGRADES_TIER_0 = [
     exports.sanctuaries,
     exports.zombie,
-    exports.babyzombie
+    exports.babyzombie,
+    exports.sniperzombie
 ]
 exports.tanks.UPGRADES_TIER_0 = [
     exports.basic,
